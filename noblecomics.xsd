@@ -62,7 +62,7 @@
     <xs:attribute name="recordID" type="ncm:RecordIDType" use="required">
       <xs:annotation>
         <xs:documentation>
-          A unique identifier for a noble comics record. Format: NCM-[platform abbreviation]-[genre code]-[serial number]. Platform abbreviation examples: NW = Naver Webtoon / Naver Series, KP = KakaoPage, MP = Munpia. Genre code examples: MH = Martial Arts, PD = Period Drama. Example: NCM-NW-MH-001.
+          A unique identifier for a noble comics record. Format: NCM-[platform abbreviation]-[genre code]-[serial number]. Platform abbreviation examples: NW = Naver Webtoon / Naver Series, KP = KakaoPage, MP = Munpia. Genre code examples: MA = Martial Arts, PD = Period Drama. Example: NCM-NW-MA-001.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -72,7 +72,7 @@
   <xs:simpleType name="RecordIDType">
     <xs:annotation>
       <xs:documentation>
-        A controlled identifier type for noble comics records. Format: NCM-[platform abbreviation]-[genre code]-[serial number]. Platform abbreviation examples include NW for Naver Webtoon, KP for KakaoPage. Genre code examples include MH for martial arts and PD for period drama.
+        A controlled identifier type for noble comics records. Format: NCM-[platform abbreviation]-[genre code]-[serial number]. Platform abbreviation examples include NW for Naver Webtoon, KP for KakaoPage. Genre code examples include MA for martial arts and PD for period drama.
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
@@ -208,14 +208,15 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <!-- Design intent: Publisher values are restricted to the recommended controlled vocabulary from the draft. -->
+  <!-- Design intent: PublisherType remains flexible because publisher and platform names cannot be fully controlled across webnovel and webtoon services. The draft recommends common values such as 네이버웹툰, 네이버시리즈, 문피아, and 카카오페이지, but the XSD does not enforce them as enumeration values. -->
   <xs:simpleType name="PublisherType">
+    <xs:annotation>
+      <xs:documentation>
+        A flexible text value for the platform or publisher where the work is serialized or published. Recommended examples include 네이버웹툰, 네이버시리즈, 문피아, 카카오페이지, 리디북스, and JHS BOOKS, but other publisher names are allowed.
+      </xs:documentation>
+    </xs:annotation>
     <xs:restriction base="xs:string">
-      <xs:enumeration value="네이버웹툰"/>
-      <xs:enumeration value="네이버시리즈"/>
-      <xs:enumeration value="문피아"/>
-      <xs:enumeration value="카카오페이지"/>
-      <xs:enumeration value="리디북스"/>
+      <xs:minLength value="1"/>
     </xs:restriction>
   </xs:simpleType>
 
