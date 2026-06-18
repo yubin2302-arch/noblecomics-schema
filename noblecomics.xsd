@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  NobleComics Metadata Schema (Draft 4 XSD)
+  Design intent: This schema validates metadata records for webnovel-to-webtoon adaptations.
+  Namespace strategy: The revised Draft 3 design uses dcterms, schema.org, and the custom ncm namespace as conceptual sources. The INTRO namespace was removed because the adaptation relationship is represented through source references and episode mappings within the ncm structure.
+  Validation strategy: All validation-critical elements are implemented in the ncm namespace to avoid external schema import errors. Dublin Core Terms and Schema.org are recorded in xs:documentation where relevant.
+  AI-assistance note: Prompt given to the AI assistant: “Based on my revised metadata draft and comments, implement an XSD and XML instance as similarly as possible, using attributes for compactness and comments for design intent.”
+  Modification made from AI-assisted draft: External-looking fields such as title, publisher, source, and datePublished were modeled as ncm elements while preserving their original semantic sources in documentation annotations.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="https://example.org/ns/noblecomics"
+           xmlns:ncm="https://example.org/ns/noblecomics"
+           xmlns:dcterms="http://purl.org/dc/terms/"
+           xmlns:schema="https://schema.org/"
+           xmlns:xml="http://www.w3.org/XML/1998/namespace"
+           targetNamespace="https://example.org/ns/noblecomics"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <!-- Design intent: Root container allows one or more records in a single XML instance, supporting multiple works such as 화산귀환 and 절대군림 while satisfying the assignment requirement for multiple XML records. -->
+  <xs:element name="nobleComicsRecords">
+    <xs:annotation>
+      <xs:documentation>A collection of noble comics metadata records describing webnovel-to-webtoon adaptation cases.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Design intent: Each nobleComicsRecord is independent, so multiple adaptation cases can be validated together if needed. -->
+        <xs:element name="nobleComicsRecord" type="ncm:NobleComicsRecordType" minOccurs="1" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>A single metadata record for one noble comics adaptation, including the source webnovel and adapted webtoon.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+
+  <!-- Design intent: The record-level structure separates sourceWork and adaptedWork so that the original webnovel and adapted webtoon can be described independently while preserving their relationship through source references and episode mappings. -->
+  <xs:complexType name="NobleComicsRecordType">
+    <xs:sequence>
+      
+      <!-- Design intent: sourceWork represents the original webnovel. -->
+      <xs:element name="sourceWork" type="ncm:WorkType">
+        <xs:annotation>
+          <xs:documentation>
+            The original webnovel that serves as the source work for the webtoon adaptation.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+      <!-- Design intent: adaptedWork extends the shared work structure with source and episode mapping information. -->
+      <xs:element name="adaptedWork" type="ncm:AdaptedWorkType">
+        <xs:annotation>
+          <xs:documentation>
+            The webtoon work adapted from the source webnovel.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+    </xs:sequence>
+    <!-- Design intent: recordID is implemented as a required attribute because it identifies the record itself rather than describing work content. The attribute follows the controlled identifier pattern defined in the data dictionary. -->
+    <xs:attribute name="recordID" type="ncm:RecordIDType" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          A unique identifier for a noble comics record. Format: NCM-[platform abbreviation]-[genre code]-[serial number]. Platform abbreviation examples: NW = Naver Webtoon / Naver Series, KP = KakaoPage, MP = Munpia. Genre code examples: MH = Martial Arts, PD = Period Drama. Example: NCM-NW-MH-001.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- Design intent: RecordIDType prevents informal identifiers and follows the data dictionary format NCM-[platform]-[genre]-[serial]. The platform and genre components use uppercase abbreviations, and the serial number uses three digits. -->
+  <xs:simpleType name="RecordIDType">
+    <xs:annotation>
+      <xs:documentation>
+        A controlled identifier type for noble comics records. Format: NCM-[platform abbreviation]-[genre code]-[serial number]. Platform abbreviation examples include NW for Naver Webtoon, KP for KakaoPage. Genre code examples include MH for martial arts and PD for period drama.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="NCM-[A-Z]{2,4}-[A-Z]{2,4}-[0-9]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: WorkType groups common bibliographic and descriptive fields used by both sourceWork and adaptedWork, including title, media type, creator, publisher, publication date, genre, episode count, and serialization schedule. This shared type avoids duplicate definitions and supports consistent description of both the original webnovel and the adapted webtoon. -->
+  <xs:complexType name="WorkType">
+    <xs:sequence>
+      <!-- Design intent: title is repeatable for multilingual titles or subtitles and uses xml:lang when needed. Conceptually based on dcterms:title. -->
+      <xs:element name="title" type="ncm:LangStringType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The official title of the original webnovel or webtoon. This element is conceptually based on dcterms:title.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: mediaType is required to distinguish webNovel from webtoon. -->
+      <xs:element name="mediaType" type="ncm:MediaTypeType">
+        <xs:annotation>
+          <xs:documentation>The media type of the work, used to distinguish webnovel and webtoon.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: creatorWrap groups repeated creator elements and keeps the main work sequence readable. -->
+      <xs:element name="creatorWrap" type="ncm:CreatorWrapType">
+        <xs:annotation>
+          <xs:documentation>A wrapper element containing one or more creators who participated in the work.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: publisher is repeatable because a work may be distributed by more than one platform or publisher. Conceptually based on dcterms:publisher. -->
+      <xs:element name="publisher" type="ncm:PublisherType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The platform or publisher where the work is serialized or published. This element is conceptually based on dcterms:publisher.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: datePublished uses xs:date to enforce ISO 8601 date values. Conceptually based on schema:datePublished. -->
+      <xs:element name="datePublished" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The first publication or serialization date of the work. This element is conceptually based on schema:datePublished.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: genreWrap allows a major genre and one or more subgenres using controlled values. -->
+      <xs:element name="genreWrap" type="ncm:GenreWrapType">
+        <xs:annotation>
+          <xs:documentation>A wrapper element containing major and subgenre classifications for the work.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: episodeCount is integer content with recording-date and extras attributes, following the user's comment that the source date should be explicit. -->
+      <xs:element name="episodeCount" type="ncm:EpisodeCountType">
+        <xs:annotation>
+          <xs:documentation>The total number of episodes at the time the record was created or updated.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: serializationSchedule is optional because completed or archival works may not need a current schedule. -->
+      <xs:element name="serializationSchedule" type="ncm:SerializationScheduleType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The serialization frequency, day of week, and current serialization status of the work.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Design intent: AdaptedWorkType reuses WorkType and adds fields that only apply to the webtoon adaptation. -->
+  <xs:complexType name="AdaptedWorkType">
+    <xs:complexContent>
+      <xs:extension base="ncm:WorkType">
+        <xs:sequence>
+          <!-- Design intent: source is mandatory inside adaptedWork because every adaptation should identify the original webnovel. Conceptually based on dcterms:source. -->
+          <xs:element name="source" type="xs:anyURI">
+            <xs:annotation>
+              <xs:documentation>A URI that identifies the original webnovel used as the source of the adapted webtoon. This element is conceptually based on dcterms:source.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <!-- Design intent: episodeMappingWrap is optional because not all records need detailed episode-to-episode mapping. -->
+          <xs:element name="episodeMappingWrap" type="ncm:EpisodeMappingWrapType" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>A wrapper element containing mappings between webnovel episode ranges and webtoon episode ranges.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Design intent: LangStringType allows text content plus xml:lang, which is needed for titles in Korean or English. -->
+  <xs:complexType name="LangStringType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:anyAttribute namespace="http://www.w3.org/XML/1998/namespace" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Design intent: Media type is a closed vocabulary because this schema is limited to webnovel-to-webtoon adaptation records. -->
+  <xs:simpleType name="MediaTypeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="webNovel"/>
+      <xs:enumeration value="webtoon"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: creatorWrap validates one or more creator entries. -->
+  <xs:complexType name="CreatorWrapType">
+    <xs:sequence>
+      <!-- Design intent: creator is repeatable because works commonly have separate author, adapter, illustrator, or colorist roles. -->
+      <xs:element name="creator" type="ncm:CreatorType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>A person or studio that contributed to creating the work.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Design intent: creator role is modeled as an attribute to make creator records compact, following the user's revision comment about attribute use. -->
+  <xs:complexType name="CreatorType">
+    <xs:sequence>
+      <!-- Design intent: creatorName is a text-only child element so the name remains human-readable and searchable. -->
+      <xs:element name="creatorName" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The name of a creator, such as an author, adapter, illustrator, or colorist.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="role" type="ncm:CreatorRoleType" use="required"/>
+  </xs:complexType>
+
+  <!-- Design intent: Controlled vocabulary from Draft 3 for creator roles. -->
+  <xs:simpleType name="CreatorRoleType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="author"/>
+      <xs:enumeration value="adapter"/>
+      <xs:enumeration value="illustrator"/>
+      <xs:enumeration value="colorist"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: Publisher values are restricted to the recommended controlled vocabulary from the draft. -->
+  <xs:simpleType name="PublisherType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="네이버웹툰"/>
+      <xs:enumeration value="네이버시리즈"/>
+      <xs:enumeration value="문피아"/>
+      <xs:enumeration value="카카오페이지"/>
+      <xs:enumeration value="리디북스"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: genreWrap allows one major genre and additional subgenres; the type distinction is enforced by an attribute. -->
+  <xs:complexType name="GenreWrapType">
+    <xs:sequence>
+      <!-- Design intent: genre is repeatable because a work can have one major genre and multiple subgenre terms. -->
+      <xs:element name="genre" type="ncm:GenreType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The major or subgenre classification of the work.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Design intent: Genre uses simpleContent because it needs text plus a required type attribute. -->
+  <xs:complexType name="GenreType">
+    <xs:simpleContent>
+      <xs:extension base="ncm:GenreValueType">
+        <xs:attribute name="type" type="ncm:GenreTypeAttribute" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Design intent: Controlled vocabulary from Draft 3. The scope is kept close to martial arts and period drama, so martial arts adaptation cases such as 화산귀환 and 절대군림 fit without expanding the vocabulary. -->
+  <xs:simpleType name="GenreValueType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="무협"/>
+      <xs:enumeration value="사극"/>
+      <xs:enumeration value="회귀물"/>
+      <xs:enumeration value="환생물"/>
+      <xs:enumeration value="시스템무협"/>
+      <xs:enumeration value="정통무협"/>
+      <xs:enumeration value="명가물"/>
+      <xs:enumeration value="퓨전무협"/>
+      <xs:enumeration value="암살자물"/>
+      <xs:enumeration value="궁중물"/>
+      <xs:enumeration value="로맨스사극"/>
+      <xs:enumeration value="정치물"/>
+      <xs:enumeration value="전쟁물"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: Genre type distinguishes broad and detailed genre terms. -->
+  <xs:simpleType name="GenreTypeAttribute">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="major"/>
+      <xs:enumeration value="sub"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: EpisodeCountType stores a positive integer plus attributes for recording date and extras inclusion. -->
+  <xs:complexType name="EpisodeCountType">
+    <xs:simpleContent>
+      <xs:extension base="ncm:PositiveIntegerType">
+        <xs:attribute name="asOf" type="xs:date" use="required"/>
+        <xs:attribute name="includesExtras" type="xs:boolean" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Design intent: PositiveIntegerType prevents zero or negative episode counts. -->
+  <xs:simpleType name="PositiveIntegerType">
+    <xs:restriction base="xs:positiveInteger"/>
+  </xs:simpleType>
+
+  <!-- Design intent: SerializationScheduleType records frequency, optional day(s), and status in a fixed order for predictable validation. -->
+  <xs:complexType name="SerializationScheduleType">
+    <xs:sequence>
+      <!-- Design intent: frequency is controlled to the terms listed in the data dictionary. -->
+      <xs:element name="frequency" type="ncm:FrequencyType">
+        <xs:annotation>
+          <xs:documentation>The publication frequency of the work.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: dayOfWeek is repeatable for works serialized several days per week. -->
+      <xs:element name="dayOfWeek" type="ncm:DayOfWeekType" minOccurs="0" maxOccurs="7">
+        <xs:annotation>
+          <xs:documentation>The day of the week on which the work is serialized.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: status is controlled so records use consistent values for ongoing, completed, or hiatus. -->
+      <xs:element name="status" type="ncm:StatusType">
+        <xs:annotation>
+          <xs:documentation>The current serialization status of the work.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Design intent: Controlled vocabulary from Draft 3 for serialization frequency. -->
+  <xs:simpleType name="FrequencyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="daily"/>
+      <xs:enumeration value="weekly"/>
+      <xs:enumeration value="biweekly"/>
+      <xs:enumeration value="triweekly"/>
+      <xs:enumeration value="irregular"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: dayOfWeek is controlled to avoid spelling variation. -->
+  <xs:simpleType name="DayOfWeekType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Monday"/>
+      <xs:enumeration value="Tuesday"/>
+      <xs:enumeration value="Wednesday"/>
+      <xs:enumeration value="Thursday"/>
+      <xs:enumeration value="Friday"/>
+      <xs:enumeration value="Saturday"/>
+      <xs:enumeration value="Sunday"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: Controlled vocabulary from Draft 3 for serialization status. -->
+  <xs:simpleType name="StatusType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ongoing"/>
+      <xs:enumeration value="completed"/>
+      <xs:enumeration value="hiatus"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Design intent: episodeMappingWrap keeps optional mapping information separate from core work description. -->
+  <xs:complexType name="EpisodeMappingWrapType">
+    <xs:sequence>
+      <!-- Design intent: episodeMapping is repeatable because one webtoon episode may correspond to different source episode ranges or vice versa. -->
+      <xs:element name="episodeMapping" type="ncm:EpisodeMappingType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>A mapping between a source webnovel episode range and an adapted webtoon episode range.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Design intent: Episode mapping uses text fields instead of numeric-only fields so ranges such as “opening section” or “episode 1” can be recorded. -->
+  <xs:complexType name="EpisodeMappingType">
+    <xs:sequence>
+      <!-- Design intent: novelEpisodeRange records the relevant part of the source webnovel. -->
+      <xs:element name="novelEpisodeRange" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The source webnovel episode or episode range corresponding to the webtoon episode.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: webtoonEpisodeRange records the webtoon episode or range, such as 1 for the first episode. -->
+      <xs:element name="webtoonEpisodeRange" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The adapted webtoon episode or episode range corresponding to the source webnovel episode range.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- Design intent: mappingNote records interpretation and avoids over-forcing narrative comparison into numeric fields. -->
+      <xs:element name="mappingNote" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>A note explaining how the webnovel content is mapped to the webtoon episode.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
