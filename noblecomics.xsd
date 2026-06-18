@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  NobleComics Metadata Schema (Draft 4 XSD)
+  NobleComics Metadata Schema
   Design intent: This schema validates metadata records for webnovel-to-webtoon adaptations.
   Namespace strategy: The revised Draft 3 design uses dcterms, schema.org, and the custom ncm namespace as conceptual sources. The INTRO namespace was removed because the adaptation relationship is represented through source references and episode mappings within the ncm structure.
   Validation strategy: All validation-critical elements are implemented in the ncm namespace to avoid external schema import errors. Dublin Core Terms and Schema.org are recorded in xs:documentation where relevant.
