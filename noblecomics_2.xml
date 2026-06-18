@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nobleComicsRecords
+    xmlns="https://example.org/ns/noblecomics"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        https://example.org/ns/noblecomics
+        https://yubin2302-arch.github.io/noblecomics-schema/noblecomics.xsd">
+
+  <!-- XML instance record 2: 절대군림 webnovel-to-webtoon adaptation, focusing on webtoon episode 1. -->
+  <nobleComicsRecord recordID="NCM-NW-MH-002">
+    <sourceWork>
+      <title xml:lang="ko">절대군림[개정판]</title>
+      <mediaType>webNovel</mediaType>
+      <creatorWrap>
+        <creator role="author">
+          <creatorName>장영훈</creatorName>
+        </creator>
+      </creatorWrap>
+      <publisher>JHS BOOKS</publisher>
+      <datePublished>2022-01-12</datePublished>
+      <genreWrap>
+        <genre type="major">무협</genre>
+        <genre type="sub">정통무협</genre>
+      </genreWrap>
+      <episodeCount asOf="2026-06-10" includesExtras="false">351</episodeCount>
+      <serializationSchedule>
+        <frequency>irregular</frequency>
+        <status>completed</status>
+      </serializationSchedule>
+    </sourceWork>
+
+    <adaptedWork>
+      <title xml:lang="ko">절대군림</title>
+      <mediaType>webtoon</mediaType>
+      <creatorWrap>
+        <creator role="author">
+          <creatorName>장영훈</creatorName>
+        </creator>
+        <creator role="adapter">
+          <creatorName>박시대</creatorName>
+        </creator>
+        <creator role="illustrator">
+          <creatorName>박시대</creatorName>
+        </creator>
+      </creatorWrap>
+      <publisher>네이버웹툰</publisher>
+      <datePublished>2024-09-27</datePublished>
+      <genreWrap>
+        <genre type="major">무협</genre>
+        <genre type="sub">정통무협</genre>
+      </genreWrap>
+      <episodeCount asOf="2026-06-10" includesExtras="false">1</episodeCount>
+      <serializationSchedule>
+        <frequency>weekly</frequency>
+        <dayOfWeek>Saturday</dayOfWeek>
+        <status>ongoing</status>
+      </serializationSchedule>
+      <source>https://series.naver.com/novel/detail.series?productNo=8067042</source>
+      <episodeMappingWrap>
+        <episodeMapping>
+          <novelEpisodeRange>1, 2, 3, 4</novelEpisodeRange>
+          <webtoonEpisodeRange>1</webtoonEpisodeRange>
+          <mappingNote>웹툰 1화는 웹소설 1~4화와 대응된다. 다만 1화의 맨 앞부분 전개는 생략되었으며, 4화의 마지막 부분은 2화로 연결된다. 한 암살자가 귀족의 의뢰를 받아 한 청년을 죽이러 가지만 각종 무림고수의 비호를 받고 있다는 사실을 알게 되어 자결한다. 주인공은 무림고수의 비호를 받고 있으나, 그들의 비호가 필요없을 정도로 강하다는 사실을 암시하는 장면을 각색했다.</mappingNote>
+        </episodeMapping>
+      </episodeMappingWrap>
+    </adaptedWork>
+  </nobleComicsRecord>
+</nobleComicsRecords>

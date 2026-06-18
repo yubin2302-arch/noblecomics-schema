@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nobleComicsRecords
+    xmlns="https://example.org/ns/noblecomics"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        https://example.org/ns/noblecomics
+        https://yubin2302-arch.github.io/noblecomics-schema/noblecomics.xsd">
+
+  <!-- XML instance record 1: 화산귀환 webnovel-to-webtoon adaptation, focusing on webtoon episode 1. -->
+  <nobleComicsRecord recordID="NCM-NW-MH-001">
+    <sourceWork>
+      <title xml:lang="ko">화산귀환</title>
+      <mediaType>webNovel</mediaType>
+      <creatorWrap>
+        <creator role="author">
+          <creatorName>비가</creatorName>
+        </creator>
+      </creatorWrap>
+      <publisher>네이버시리즈</publisher>
+      <datePublished>2019-04-25</datePublished>
+      <genreWrap>
+        <genre type="major">무협</genre>
+        <genre type="sub">환생물</genre>
+      </genreWrap>
+      <episodeCount asOf="2026-06-10" includesExtras="false">1927</episodeCount>
+      <serializationSchedule>
+        <frequency>triweekly</frequency>
+        <dayOfWeek>Monday</dayOfWeek>
+        <dayOfWeek>Wednesday</dayOfWeek>
+        <dayOfWeek>Friday</dayOfWeek>
+        <status>ongoing</status>
+      </serializationSchedule>
+    </sourceWork>
+
+    <adaptedWork>
+      <title xml:lang="ko">화산귀환</title>
+      <mediaType>webtoon</mediaType>
+      <creatorWrap>
+        <creator role="author">
+          <creatorName>비가</creatorName>
+        </creator>
+        <creator role="adapter">
+          <creatorName>LICO</creatorName>
+        </creator>
+        <creator role="illustrator">
+          <creatorName>ARCHE</creatorName>
+        </creator>
+        <creator role="illustrator">
+          <creatorName>LICO</creatorName>
+        </creator>
+      </creatorWrap>
+      <publisher>네이버웹툰</publisher>
+      <datePublished>2021-03-23</datePublished>
+      <genreWrap>
+        <genre type="major">무협</genre>
+        <genre type="sub">환생물</genre>
+      </genreWrap>
+      <episodeCount asOf="2026-06-10" includesExtras="false">1</episodeCount>
+      <serializationSchedule>
+        <frequency>weekly</frequency>
+        <dayOfWeek>Wednesday</dayOfWeek>
+        <status>ongoing</status>
+      </serializationSchedule>
+      <source>https://series.naver.com/novel/detail.series?productNo=4130558</source>
+      <episodeMappingWrap>
+        <episodeMapping>
+          <novelEpisodeRange>1, 2</novelEpisodeRange>
+          <webtoonEpisodeRange>1</webtoonEpisodeRange>
+          <mappingNote>웹툰 1화는 웹소설 1화에서 2화의 일부 내용을 포함한다. 청명이 마도 교주를 죽인 후 백년이 지나 개방 소속 걸인에 빙의한다. 그리고 화산파가 과거의 영광을 잃었다는 소식을 듣게 된다.</mappingNote>
+        </episodeMapping>
+      </episodeMappingWrap>
+    </adaptedWork>
+  </nobleComicsRecord>
+</nobleComicsRecords>
