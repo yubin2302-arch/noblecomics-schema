@@ -7,7 +7,7 @@
         https://yubin2302-arch.github.io/noblecomics-schema/noblecomics.xsd">
 
   <!-- XML instance record 1: 화산귀환 webnovel-to-webtoon adaptation, focusing on webtoon episode 1. -->
-  <nobleComicsRecord recordID="NCM-NW-MH-001">
+  <nobleComicsRecord recordID="NCM-NW-MA-001">
     <sourceWork>
       <title xml:lang="ko">화산귀환</title>
       <mediaType>webNovel</mediaType>

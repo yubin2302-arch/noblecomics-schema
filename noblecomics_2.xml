@@ -7,7 +7,7 @@
         https://yubin2302-arch.github.io/noblecomics-schema/noblecomics.xsd">
 
   <!-- XML instance record 2: 절대군림 webnovel-to-webtoon adaptation, focusing on webtoon episode 1. -->
-  <nobleComicsRecord recordID="NCM-NW-MH-002">
+  <nobleComicsRecord recordID="NCM-NW-MA-002">
     <sourceWork>
       <title xml:lang="ko">절대군림[개정판]</title>
       <mediaType>webNovel</mediaType>
